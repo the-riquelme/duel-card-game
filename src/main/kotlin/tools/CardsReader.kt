@@ -4,32 +4,31 @@ import entities.Card
 import java.io.File
 import java.io.InputStream
 
-class CardsReader (){
+class CardsReader () {
 
-    companion object{
-        private lateinit var cards:List<Card>
+    companion object {
+        private lateinit var cards: List<Card>
 
-        fun getCartas():List<Card> {
-            if(!::cards.isInitialized){
-                /*aqui deve ocorrer a carga das cartas
-                *
-                *Sugiro usar a função map para transformar as String recuperadas do arquivo em objetos do tipo carta
-                */
-                //cartas = lerCartasCSV()
-                println(lerCartasCSV())
+        fun getCards(): List<Card> {
+            if (!::cards.isInitialized) {
+                val streamData:InputStream = File("cartas.csv").inputStream()
+                val data: List<String> = streamData.bufferedReader().lineSequence()
+                    .filter { it.isNotBlank() }.toList()
+
+                cards = data.map {
+                    val cardData = it.split(";")
+                    Card(
+                        cardData[0],
+                        cardData[1],
+                        cardData[2].toInt(),
+                        cardData[3].toInt(),
+                        cardData[4]
+                    )
+                }
             }
 
-            return cards.map { it }  //retorna uma replica das cartas
-        }
-
-        fun lerCartasCSV():List<String> {
-            val streamDados:InputStream = File("cartas.csv").inputStream()
-            val leitorStream = streamDados.bufferedReader()
-            return leitorStream.lineSequence()
-                .filter { it.isNotBlank() }.toList()
+            return cards;
         }
     }
-
-
 
 }

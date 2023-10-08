@@ -5,10 +5,10 @@ class Card(
     private val description: String,
     private var attack: Int,
     private var defense: Int,
-    private val type: String,
-    private var mode: String,
-    private var allowStateChange: Boolean
+    private val type: String
 ) {
+    private var mode: String = "static"
+    private var allowModeChange: Boolean = true
     private val equipment: MutableList<Card> = mutableListOf()
 
     var attackValue: Int
@@ -38,9 +38,9 @@ class Card(
         }
 
     var stateChangeAllowed: Boolean
-        get() = allowStateChange
+        get() = allowModeChange
         set(value) {
-            allowStateChange = value
+            allowModeChange = value
         }
 
 }

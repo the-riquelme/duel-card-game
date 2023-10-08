@@ -43,4 +43,35 @@ class Card(
             allowModeChange = value
         }
 
+    override fun toString(): String {
+        val builder = StringBuilder()
+        builder.appendLine("- ".repeat(50))
+
+        builder.appendLine(name)
+        builder.append("   ATK: $attack  DEF: $defense")
+        builder.appendLine("\n   Modo: $mode")
+
+        if (description.isNotBlank()) {
+            builder.appendLine("\n   Descrição:")
+            description.lines().forEach { line ->
+                builder.appendLine("      $line")
+            }
+        }
+
+        if (equipment.isNotEmpty()) {
+            builder.appendLine("   Equipamentos:")
+            equipment.forEachIndexed { index, equipmentCard ->
+                builder.appendLine("      ${index + 1}. ${equipmentCard.name} (${equipmentCard.attackValue - attack} ATK, ${equipmentCard.defenseValue - defense} DEF)")
+            }
+        }
+
+        builder.appendLine("- ".repeat(50))
+
+        return builder.toString()
+    }
+
+
+
+
+
 }

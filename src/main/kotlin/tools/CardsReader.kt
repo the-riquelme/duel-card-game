@@ -1,6 +1,6 @@
 package tools
 
-import model.Card
+import entities.Card
 import java.io.File
 import java.io.InputStream
 

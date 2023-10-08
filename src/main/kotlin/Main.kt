@@ -1,5 +1,5 @@
-import tools.CardsReader
+import entities.CardGame
 
 fun main(args: Array<String>) {
-    println(CardsReader.getCards().first())
+    CardGame.start()
 }

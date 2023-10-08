@@ -7,7 +7,7 @@ class Card(
     private var defense: Int,
     private val type: String
 ) {
-    private var mode: String = "static"
+    private var mode: String = "Estático"
     private var allowModeChange: Boolean = true
     private val equipment: MutableList<Card> = mutableListOf()
 

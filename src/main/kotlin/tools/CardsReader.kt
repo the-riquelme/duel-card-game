@@ -7,9 +7,9 @@ import java.io.InputStream
 class CardsReader () {
 
     companion object {
-        private lateinit var cards: List<Card>
+        private lateinit var cards: MutableList<Card>
 
-        fun getCards(): List<Card> {
+        fun getCards(): MutableList<Card> {
             if (!::cards.isInitialized) {
                 val streamData:InputStream = File("cartas.csv").inputStream()
                 val data: List<String> = streamData.bufferedReader().lineSequence()
@@ -24,11 +24,21 @@ class CardsReader () {
                         cardData[3].toInt(),
                         cardData[4]
                     )
-                }
+                }.shuffled() as MutableList<Card>
             }
 
             return cards;
         }
+
+        fun pickFiveRandomCards(deck: MutableList<Card>): MutableList<Card> {
+            require(deck.size >= 5) { "O deck deve ter pelo menos 5 cartas para selecionar." }
+
+            val selectedCards = deck.shuffled().take(5)
+            deck.removeAll(selectedCards)
+
+            return selectedCards as MutableList<Card>
+        }
+
     }
 
 }

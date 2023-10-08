@@ -2,8 +2,10 @@ package entities
 
 import tools.CardsReader
 
-class Player(private val name: String) {
-    private val handCards: MutableList<Card> = mutableListOf()
+class Player(
+    private val name: String,
+    private val handCards: MutableList<Card>
+) {
     private val boardCards: MutableList<Card> = mutableListOf()
     private var healthPoints: Int = 10000 // valor padrao
 

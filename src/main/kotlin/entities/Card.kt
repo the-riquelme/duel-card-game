@@ -11,6 +11,12 @@ class Card(
     private var allowModeChange: Boolean = true
     private val equipment: MutableList<Card> = mutableListOf()
 
+    val nameValue: String
+        get() = name
+
+    val descriptionValue: String
+        get() = description
+
     var attackValue: Int
         get() = attack
         set(value) {
@@ -43,35 +49,10 @@ class Card(
             allowModeChange = value
         }
 
-    override fun toString(): String {
-        val builder = StringBuilder()
-        builder.appendLine("- ".repeat(50))
+    val typeValue: String
+        get() = type
 
-        builder.appendLine(name)
-        builder.append("   ATK: $attack  DEF: $defense")
-        builder.appendLine("\n   Modo: $mode")
-
-        if (description.isNotBlank()) {
-            builder.appendLine("\n   Descrição:")
-            description.lines().forEach { line ->
-                builder.appendLine("      $line")
-            }
-        }
-
-        if (equipment.isNotEmpty()) {
-            builder.appendLine("   Equipamentos:")
-            equipment.forEachIndexed { index, equipmentCard ->
-                builder.appendLine("      ${index + 1}. ${equipmentCard.name} (${equipmentCard.attackValue - attack} ATK, ${equipmentCard.defenseValue - defense} DEF)")
-            }
-        }
-
-        builder.appendLine("- ".repeat(50))
-
-        return builder.toString()
-    }
-
-
-
-
+    val equipmentList: MutableList<Card>
+        get() = equipment
 
 }

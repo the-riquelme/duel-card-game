@@ -21,7 +21,7 @@ class CardGame {
             val players = mutableListOf<Player>()
 
             for (i in 1..2) {
-                print("Informe o nome do jogador $i: ")
+                print("=> Informe o nome do jogador $i: ")
                 val name = readlnOrNull() ?: ""
                 val handCards: MutableList<Card> = CardsReader.pickFiveRandomCards(cards)
                 players.add(Player(name, handCards))
@@ -31,7 +31,7 @@ class CardGame {
         }
 
         fun start() {
-            println("\n${players.first().playerName}, ${players.last().playerName}")
+            playerOfMoment.showHandCards()
         }
     }
 

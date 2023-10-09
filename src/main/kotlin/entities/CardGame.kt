@@ -30,8 +30,38 @@ class CardGame {
             return players
         }
 
-        fun start() {
+        private fun chooseAction() {
+            println("\n" + "#".repeat(25) + " -> Vez do Jogador: ${playerOfMoment.playerName} <- " + "#".repeat(25) + "\n")
             playerOfMoment.showHandCards()
+
+            println("-> Possíveis ações na rodada:")
+
+            if (playerOfMoment.existMonsterCardsOnHand()) {
+                println("   a) Posicionar um novo monstro no tabuleiro")
+            }
+
+            if (playerOfMoment.existEquipCardsOnHand() && playerOfMoment.existMonsterCardsOnBoard()) {
+                println("   b) Equipar um monstro com uma carta de equipamento")
+            }
+
+            if (playerOfMoment.handCardsSize > 0) {
+                println("   c) Descartar uma carta da mão")
+            }
+
+            if (round > 1) {
+                println("   d) Realizar um ataque contra o oponente")
+            }
+
+            if (playerOfMoment.existMonsterCardsOnBoard()) {
+                println("   e) Alterar o estado de um monstro (ataque/defesa)")
+            }
+
+            print("\n=> Escolha sua ação de acordo com sua letra correspondente: ")
+            val choice = readlnOrNull() ?: ""
+        }
+
+        fun start() {
+            chooseAction()
         }
     }
 

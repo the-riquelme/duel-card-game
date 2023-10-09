@@ -11,7 +11,7 @@ class Player(
     private var healthPoints: Int = 10000 // valor padrao
 
     fun showHandCards() {
-        println("\n-> Cartas na Mão:\n")
+        println("-> Cartas na Mão:\n")
         val cardLine = "+" + "-".repeat(100) + "+"
 
         for (i in 0..<handCards.size) {
@@ -32,7 +32,19 @@ class Player(
             }
         }
 
-        println(cardLine)
+        println(cardLine + "\n")
+    }
+
+    fun existEquipCardsOnHand(): Boolean {
+        return handCards.any { it.typeValue.lowercase() == "equipamento" }
+    }
+
+    fun existMonsterCardsOnHand(): Boolean {
+        return handCards.any { it.typeValue.lowercase() == "monstro" }
+    }
+
+    fun existMonsterCardsOnBoard(): Boolean {
+        return boardCards.any { it.typeValue.lowercase() == "monstro" }
     }
 
     val playerName: String
@@ -41,5 +53,8 @@ class Player(
     var points: Int
         get() = healthPoints
         set(value) {}
+
+    val handCardsSize: Int
+        get() = handCards.size
 
 }

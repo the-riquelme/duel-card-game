@@ -37,7 +37,7 @@ class Card(
             }
         }
 
-    var cardMode: String
+    var modeValue: String
         get() = mode
         set(value) {
             mode = value

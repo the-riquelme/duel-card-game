@@ -30,34 +30,73 @@ class CardGame {
             return players
         }
 
+        private fun positionMonsterOnBoard() {
+            print("\n=> Informe o índice do carta do tipo Monstro que deseja posicionar no tabuleiro ou digite 'voltar' pra retornar ao menu: ")
+            val index = readlnOrNull() ?: ""
+
+            if (index == "voltar") {
+                return chooseAction()
+            }
+
+            println("\n-> Se monstro deve ser posicionado em modo de defesa(1) oud e ataque(2): ")
+            val mode = readlnOrNull() ?: ""
+
+            val indexInt = index.toIntOrNull() ?: -1;
+            val modeInt = mode.toIntOrNull() ?: -1;
+            if (!playerOfMoment.addMonsterToBoard(indexInt, modeInt)) {
+                println("Escolha inválida! Tente novamente.")
+                return positionMonsterOnBoard()
+            }
+
+            print("\n=> Carta posicionada com sucesso!")
+        }
+
         private fun chooseAction() {
-            println("\n" + "#".repeat(25) + " -> Vez do Jogador: ${playerOfMoment.playerName} <- " + "#".repeat(25) + "\n")
-            playerOfMoment.showHandCards()
+            var gameIsRunning = true
+            var monsterAdded = false
+            var equipAdded = false
 
-            println("-> Possíveis ações na rodada:")
+            while (gameIsRunning) {
+                println("\n" + "#".repeat(25) + " -> Vez do Jogador: ${playerOfMoment.playerName} <- " + "#".repeat(25) + "\n")
+                playerOfMoment.showBoardCards()
+                playerOfMoment.showHandCards()
 
-            if (playerOfMoment.existMonsterCardsOnHand()) {
-                println("   a) Posicionar um novo monstro no tabuleiro")
+                println("-> Possíveis ações na rodada:")
+
+                if (!monsterAdded && playerOfMoment.existMonsterCardsOnHand() && playerOfMoment.boardCardsSize < 5) {
+                    println("   a) Posicionar um novo monstro no tabuleiro")
+                    monsterAdded = true
+                }
+
+                if (!equipAdded && playerOfMoment.existEquipCardsOnHand() && playerOfMoment.existMonsterCardsOnBoard()) {
+                    println("   b) Equipar um monstro com uma carta de equipamento")
+                    equipAdded = true
+                }
+
+                if (playerOfMoment.handCardsSize >= 0) {
+                    println("   c) Descartar uma carta da mão")
+                }
+
+                if (round > 1) {
+                    println("   d) Realizar um ataque contra o oponente")
+                }
+
+                if (playerOfMoment.existMonsterCardsOnBoard()) {
+                    println("   e) Alterar o estado de um monstro (ataque/defesa)")
+                }
+
+                print("\n=> Escolha sua ação de acordo com sua letra correspondente: ")
+                val choice = readlnOrNull() ?: ""
+
+                when (choice) {
+                    "a" -> positionMonsterOnBoard()
+                    else -> {
+                        println("Escolha inválida.")
+                        gameIsRunning = false
+                    }
+                }
             }
 
-            if (playerOfMoment.existEquipCardsOnHand() && playerOfMoment.existMonsterCardsOnBoard()) {
-                println("   b) Equipar um monstro com uma carta de equipamento")
-            }
-
-            if (playerOfMoment.handCardsSize > 0) {
-                println("   c) Descartar uma carta da mão")
-            }
-
-            if (round > 1) {
-                println("   d) Realizar um ataque contra o oponente")
-            }
-
-            if (playerOfMoment.existMonsterCardsOnBoard()) {
-                println("   e) Alterar o estado de um monstro (ataque/defesa)")
-            }
-
-            print("\n=> Escolha sua ação de acordo com sua letra correspondente: ")
-            val choice = readlnOrNull() ?: ""
         }
 
         fun start() {

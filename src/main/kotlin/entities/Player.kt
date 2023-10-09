@@ -32,7 +32,41 @@ class Player(
             }
         }
 
-        println(cardLine + "\n")
+        if (handCards.isEmpty()) {
+            println("| Nenhuma carta na mão" + "\n")
+        } else {
+            println(cardLine + "\n")
+        }
+    }
+
+    fun showBoardCards() {
+        println("-> Cartas no Tabuleiro - $name :\n")
+        val cardLine = "+" + "-".repeat(100) + "+"
+
+        for (i in 0..<boardCards.size) {
+            val boardCard = if (i < boardCards.size) boardCards[i] else null
+
+            println(cardLine)
+
+            if (boardCard != null) {
+                println("| Index: $i   Nome: ${boardCard.nameValue.padEnd(20)}")
+                println("| Desc: ${boardCard.descriptionValue}")
+
+                if (boardCard.equipmentList.isNotEmpty()) {
+                    println("| Equip: ${boardCard.equipmentList.joinToString(", ") { it.nameValue }}")
+                }
+
+                println("| Modo: ${boardCard.modeValue.uppercase()}")
+                println("| Tipo: ${boardCard.typeValue.uppercase(Locale.getDefault())}   ATK: ${boardCard.attackValue}   DEF: ${boardCard.defenseValue}")
+
+            }
+        }
+
+        if (boardCards.isEmpty()) {
+            println("| Nenhuma carta no tabuleiro" + "\n")
+        } else {
+            println(cardLine + "\n")
+        }
     }
 
     fun existEquipCardsOnHand(): Boolean {
@@ -47,6 +81,27 @@ class Player(
         return boardCards.any { it.typeValue.lowercase() == "monstro" }
     }
 
+    fun addMonsterToBoard(index: Int, modeInt: Int): Boolean {
+        if (index >= 0 && index < handCards.size) {
+            val card = handCards[index]
+            if (card.typeValue.lowercase() == "monstro") {
+                val removedCard = handCards.removeAt(index)
+
+                if (modeInt == 1) {
+                    removedCard.modeValue = "defesa"
+                } else if (modeInt == 2) {
+                    removedCard.modeValue = "ataque"
+                }
+
+                boardCards.add(removedCard)
+
+                return true
+            }
+        }
+
+        return false
+    }
+
     val playerName: String
         get() = name
 
@@ -56,5 +111,8 @@ class Player(
 
     val handCardsSize: Int
         get() = handCards.size
+
+    val boardCardsSize: Int
+        get() = boardCards.size
 
 }

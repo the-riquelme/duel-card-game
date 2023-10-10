@@ -85,7 +85,24 @@ class CardGame {
 
             print("\n=> Carta de Equipamento adicionada com sucesso!\n")
             return true
+        }
 
+        private fun discardCard() {
+            println("\n--> Digite 'voltar' pra retornar ao menu <--")
+            print("=> Informe o índice da CARTA na sua MÃO que deseja DESCARTAR: ")
+            val index = readlnOrNull() ?: ""
+
+            if (index == "voltar") {
+                return
+            }
+
+            val indexInt = index.toIntOrNull() ?: -1
+            if (!playerOfMoment.discardCard(indexInt)) {
+                println("!!! Escolha inválida! Tente novamente.")
+                return discardCard()
+            }
+
+            print("\n=> Carta DESCARTADA com sucesso!\n")
         }
 
         private fun chooseAction() {
@@ -108,7 +125,7 @@ class CardGame {
                     println("   b) Equipar um monstro com uma carta de equipamento")
                 }
 
-                if (playerOfMoment.handCardsSize >= 0) {
+                if (playerOfMoment.handCardsSize > 0) {
                     println("   c) Descartar uma carta da mão")
                 }
 
@@ -125,10 +142,25 @@ class CardGame {
 
                 when (choice) {
                     "a" -> {
-                        monsterAdded = positionMonsterOnBoard()
+                        if (!monsterAdded && playerOfMoment.existMonsterCardsOnHand() && playerOfMoment.boardCardsSize < 5) {
+                            monsterAdded = positionMonsterOnBoard()
+                        } else {
+                            println("Escolha inválida.")
+                        }
                     }
                     "b" -> {
-                        equipAdded = increaseEquipmentCard()
+                        if (!equipAdded && playerOfMoment.existEquipCardsOnHand() && playerOfMoment.existMonsterCardsOnBoard()) {
+                            equipAdded = increaseEquipmentCard()
+                        } else {
+                            println("Escolha inválida.")
+                        }
+                    }
+                    "c" -> {
+                        if (playerOfMoment.handCardsSize > 0) {
+                            discardCard()
+                        } else {
+                            println("Escolha inválida.")
+                        }
                     }
                     else -> {
                         println("Escolha inválida.")

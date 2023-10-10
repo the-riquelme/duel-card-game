@@ -118,6 +118,15 @@ class Player(
         return false
     }
 
+    fun discardCard(index: Int): Boolean {
+        if (index >= 0 && index < handCards.size) {
+            handCards.removeAt(index)
+            return true
+        }
+
+        return false
+    }
+
     val playerName: String
         get() = name
 

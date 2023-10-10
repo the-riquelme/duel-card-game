@@ -30,25 +30,62 @@ class CardGame {
             return players
         }
 
-        private fun positionMonsterOnBoard() {
-            print("\n=> Informe o índice do carta do tipo Monstro que deseja posicionar no tabuleiro ou digite 'voltar' pra retornar ao menu: ")
+        private fun positionMonsterOnBoard(): Boolean {
+            println("\n--> Digite 'voltar' pra retornar ao menu <--")
+            print("=> Informe o índice da carta de tipo MONSTRO na sua MÃO que deseja posicionar no TABULEIRO: ")
             val index = readlnOrNull() ?: ""
 
             if (index == "voltar") {
-                return chooseAction()
+                return false
             }
 
-            println("\n-> Se monstro deve ser posicionado em modo de defesa(1) oud e ataque(2): ")
+            println("\n--> Digite 'voltar' pra retornar ao menu <--")
+            print("=> Seu monstro deve ser posicionado em MODO de DEFESA(1) ou ATAQUE(2): ")
             val mode = readlnOrNull() ?: ""
 
-            val indexInt = index.toIntOrNull() ?: -1;
-            val modeInt = mode.toIntOrNull() ?: -1;
+            if (mode == "voltar") {
+                return false
+            }
+
+            val indexInt = index.toIntOrNull() ?: -1
+            val modeInt = mode.toIntOrNull() ?: -1
             if (!playerOfMoment.addMonsterToBoard(indexInt, modeInt)) {
-                println("Escolha inválida! Tente novamente.")
+                println("!!! Escolha inválida! Tente novamente.")
                 return positionMonsterOnBoard()
             }
 
-            print("\n=> Carta posicionada com sucesso!")
+            print("\n=> Carta posicionada com sucesso!\n")
+            return true
+        }
+
+        private fun increaseEquipmentCard(): Boolean {
+            println("\n--> Digite 'voltar' pra retornar ao menu <--")
+            print("=> Informe o índice da carta de tipo EQUIPAMENTO na sua MÃO que deseja adicionar a um MONSTRO: ")
+            val indexEquip = readlnOrNull() ?: ""
+
+            if (indexEquip == "voltar") {
+                return false
+            }
+
+            println("\n--> Digite 'voltar' pra retornar ao menu <--")
+            print("=> Informe o índice da carta de tipo MONSTRO no seu TABULEIRO que receberá o EQUIPAMENTO: ")
+            val indexMonster = readlnOrNull() ?: ""
+
+            if (indexMonster == "voltar") {
+                return false
+            }
+
+            val indexEquipInt = indexEquip.toIntOrNull() ?: -1
+            val indexMonsterInt = indexMonster.toIntOrNull() ?: -1
+
+            if (!playerOfMoment.addEquipmentCard(indexEquipInt, indexMonsterInt)) {
+                println("!!! Escolha inválida! Tente novamente.")
+                return increaseEquipmentCard()
+            }
+
+            print("\n=> Carta de Equipamento adicionada com sucesso!\n")
+            return true
+
         }
 
         private fun chooseAction() {
@@ -65,12 +102,10 @@ class CardGame {
 
                 if (!monsterAdded && playerOfMoment.existMonsterCardsOnHand() && playerOfMoment.boardCardsSize < 5) {
                     println("   a) Posicionar um novo monstro no tabuleiro")
-                    monsterAdded = true
                 }
 
                 if (!equipAdded && playerOfMoment.existEquipCardsOnHand() && playerOfMoment.existMonsterCardsOnBoard()) {
                     println("   b) Equipar um monstro com uma carta de equipamento")
-                    equipAdded = true
                 }
 
                 if (playerOfMoment.handCardsSize >= 0) {
@@ -89,7 +124,12 @@ class CardGame {
                 val choice = readlnOrNull() ?: ""
 
                 when (choice) {
-                    "a" -> positionMonsterOnBoard()
+                    "a" -> {
+                        monsterAdded = positionMonsterOnBoard()
+                    }
+                    "b" -> {
+                        equipAdded = increaseEquipmentCard()
+                    }
                     else -> {
                         println("Escolha inválida.")
                         gameIsRunning = false

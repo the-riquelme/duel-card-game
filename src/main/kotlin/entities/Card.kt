@@ -55,4 +55,10 @@ class Card(
     val equipmentList: MutableList<Card>
         get() = equipment
 
+    fun addEquipment(equipment: Card) {
+        this.attack += equipment.attackValue
+        this.defense += equipment.defenseValue
+        this.equipment.add(equipment)
+    }
+
 }

@@ -11,7 +11,7 @@ class Player(
     private var healthPoints: Int = 10000 // valor padrao
 
     fun showHandCards() {
-        println("-> Cartas na Mão:\n")
+        println("-> Cartas na Mão - $name:\n")
         val cardLine = "+" + "-".repeat(100) + "+"
 
         for (i in 0..<handCards.size) {
@@ -40,7 +40,7 @@ class Player(
     }
 
     fun showBoardCards() {
-        println("-> Cartas no Tabuleiro - $name :\n")
+        println("-> Cartas no Tabuleiro - $name:\n")
         val cardLine = "+" + "-".repeat(100) + "+"
 
         for (i in 0..<boardCards.size) {
@@ -94,6 +94,22 @@ class Player(
                 }
 
                 boardCards.add(removedCard)
+
+                return true
+            }
+        }
+
+        return false
+    }
+
+    fun addEquipmentCard(indexEquip: Int, indexMonster: Int): Boolean {
+        if ((indexEquip >= 0 && indexEquip < handCards.size) && (indexMonster >= 0 && indexMonster < boardCards.size)) {
+            val equipCard: Card = handCards[indexEquip]
+            val monsterCard: Card = boardCards[indexMonster]
+
+            if (equipCard.typeValue.lowercase() == "equipamento" && monsterCard.typeValue.lowercase() == "monstro") {
+                val removedCard = handCards.removeAt(indexEquip)
+                monsterCard.addEquipment(removedCard)
 
                 return true
             }

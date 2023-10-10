@@ -105,6 +105,10 @@ class CardGame {
             print("\n=> Carta DESCARTADA com sucesso!\n")
         }
 
+        private fun attackOpponent() {
+
+        }
+
         private fun chooseAction() {
             var gameIsRunning = true
             var monsterAdded = false
@@ -129,11 +133,11 @@ class CardGame {
                     println("   c) Descartar uma carta da mão")
                 }
 
-                if (round > 1) {
-                    println("   d) Realizar um ataque contra o oponente")
-                }
-
                 if (playerOfMoment.existMonsterCardsOnBoard()) {
+                    if (round > 1 && playerOfMoment.existsMonsterToAttack()) {
+                        println("   d) Realizar um ataque contra o oponente")
+                    }
+
                     println("   e) Alterar o estado de um monstro (ataque/defesa)")
                 }
 
@@ -158,6 +162,13 @@ class CardGame {
                     "c" -> {
                         if (playerOfMoment.handCardsSize > 0) {
                             discardCard()
+                        } else {
+                            println("Escolha inválida.")
+                        }
+                    }
+                    "d" -> {
+                        if (round > 1 && playerOfMoment.existMonsterCardsOnBoard() && playerOfMoment.existsMonsterToAttack()) {
+//                            attackOpponent()
                         } else {
                             println("Escolha inválida.")
                         }

@@ -81,6 +81,18 @@ class Player(
         return boardCards.any { it.typeValue.lowercase() == "monstro" }
     }
 
+    fun existsMonsterToAttack(): Boolean {
+        for (i in 0..<boardCards.size) {
+            val boardCard =  boardCards[i]
+
+            if (boardCard.stateChangeAllowed && boardCard.typeValue.lowercase() == "monstro" && boardCard.modeValue.lowercase() == "ataque") {
+                return true
+            }
+        }
+
+        return false
+    }
+
     fun addMonsterToBoard(index: Int, modeInt: Int): Boolean {
         if (index >= 0 && index < handCards.size) {
             val card = handCards[index]

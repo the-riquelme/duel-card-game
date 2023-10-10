@@ -93,6 +93,18 @@ class Player(
         return false
     }
 
+    fun existsMonsterToChangeMode(): Boolean {
+        for (i in 0..<boardCards.size) {
+            val boardCard =  boardCards[i]
+
+            if (boardCard.stateChangeAllowed && boardCard.typeValue.lowercase() == "monstro") {
+                return true
+            }
+        }
+
+        return false
+    }
+
     fun addMonsterToBoard(index: Int, modeInt: Int): Boolean {
         if (index >= 0 && index < handCards.size) {
             val card = handCards[index]
@@ -134,6 +146,24 @@ class Player(
         if (index >= 0 && index < handCards.size) {
             handCards.removeAt(index)
             return true
+        }
+
+        return false
+    }
+
+    fun changeMonsterCardMode(index: Int): Boolean {
+        if (index >= 0 && index < boardCards.size) {
+            val card = boardCards[index]
+
+            if (card.typeValue.lowercase() == "monstro") {
+                if (card.modeValue == "ataque") {
+                    card.modeValue = "defesa"
+                } else if (card.modeValue == "defesa") {
+                    card.modeValue = "ataque"
+                }
+
+                return true
+            }
         }
 
         return false

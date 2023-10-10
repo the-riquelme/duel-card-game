@@ -49,7 +49,7 @@ class CardGame {
 
             val indexInt = index.toIntOrNull() ?: -1
             val modeInt = mode.toIntOrNull() ?: -1
-            if (!playerOfMoment.addMonsterToBoard(indexInt, modeInt)) {
+            if ((modeInt < 1 || modeInt > 2) || !playerOfMoment.addMonsterToBoard(indexInt, modeInt)) {
                 println("!!! Escolha inválida! Tente novamente.")
                 return positionMonsterOnBoard()
             }
@@ -109,6 +109,24 @@ class CardGame {
 
         }
 
+        private fun changeMonsterMode() {
+            println("\n--> Digite 'voltar' pra retornar ao menu <--")
+            print("=> Informe o índice de um MONSTRO no TABULEIRO cujo deseja MODIFICAR o seu MODO: ")
+            val index = readlnOrNull() ?: ""
+
+            if (index == "voltar") {
+                return
+            }
+
+            val indexInt = index.toIntOrNull() ?: -1
+            if (!playerOfMoment.changeMonsterCardMode(indexInt)) {
+                println("!!! Escolha inválida! Tente novamente.")
+                return changeMonsterMode()
+            }
+
+            print("\n=> MODO da carta MONSTRO alterado com sucesso!\n")
+        }
+
         private fun chooseAction() {
             var gameIsRunning = true
             var monsterAdded = false
@@ -138,7 +156,9 @@ class CardGame {
                         println("   d) Realizar um ataque contra o oponente")
                     }
 
-                    println("   e) Alterar o estado de um monstro (ataque/defesa)")
+                    if (playerOfMoment.existsMonsterToChangeMode()) {
+                        println("   e) Alterar o estado de um monstro (ataque/defesa)")
+                    }
                 }
 
                 print("\n=> Escolha sua ação de acordo com sua letra correspondente: ")
@@ -169,6 +189,13 @@ class CardGame {
                     "d" -> {
                         if (round > 1 && playerOfMoment.existMonsterCardsOnBoard() && playerOfMoment.existsMonsterToAttack()) {
 //                            attackOpponent()
+                        } else {
+                            println("Escolha inválida.")
+                        }
+                    }
+                    "e" -> {
+                        if (playerOfMoment.existMonsterCardsOnBoard() && playerOfMoment.existsMonsterToChangeMode()) {
+                            changeMonsterMode()
                         } else {
                             println("Escolha inválida.")
                         }

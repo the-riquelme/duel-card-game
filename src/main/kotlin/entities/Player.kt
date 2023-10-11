@@ -69,6 +69,42 @@ class Player(
         }
     }
 
+    fun showBoardMonsterCardsOnAttack() {
+        println("\n-> $name - Cartas no Tabuleiro em Posição de ATAQUE:\n")
+        val cardLine = "+" + "-".repeat(100) + "+"
+
+        for (i in 0..<boardCards.size) {
+            val boardCard = if (i < boardCards.size) boardCards[i] else null
+
+            println(cardLine)
+
+            if (
+                    boardCard != null &&
+                    boardCard.stateChangeAllowed &&
+                    boardCard.typeValue.lowercase() == "monstro" &&
+                    boardCard.modeValue.lowercase() == "ataque"
+                    ) {
+
+                println("| Index: $i   Nome: ${boardCard.nameValue.padEnd(20)}")
+                println("| Desc: ${boardCard.descriptionValue}")
+
+                if (boardCard.equipmentList.isNotEmpty()) {
+                    println("| Equip: ${boardCard.equipmentList.joinToString(", ") { it.nameValue }}")
+                }
+
+                println("| Modo: ${boardCard.modeValue.uppercase()}")
+                println("| Tipo: ${boardCard.typeValue.uppercase(Locale.getDefault())}   ATK: ${boardCard.attackValue}   DEF: ${boardCard.defenseValue}")
+
+            }
+        }
+
+        if (boardCards.isEmpty()) {
+            println("| Nenhuma Carta no Tabuleiro em Posição de Ataque" + "\n")
+        } else {
+            println(cardLine + "\n")
+        }
+    }
+
     fun existEquipCardsOnHand(): Boolean {
         return handCards.any { it.typeValue.lowercase() == "equipamento" }
     }
@@ -167,6 +203,18 @@ class Player(
         }
 
         return false
+    }
+
+    fun findMonsterCardToAttack(indexMonsterCard: Int): Card? {
+        if (indexMonsterCard >= 0 && indexMonsterCard < boardCards.size) {
+            val monsterCard: Card = boardCards[indexMonsterCard]
+
+            if (monsterCard.stateChangeAllowed && monsterCard.typeValue.lowercase() == "monstro" && monsterCard.modeValue.lowercase() == "ataque") {
+                return monsterCard
+            }
+        }
+
+        return null
     }
 
     val playerName: String

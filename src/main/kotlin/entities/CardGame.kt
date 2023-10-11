@@ -6,7 +6,7 @@ class CardGame {
 
     companion object {
         private val cards: MutableList<Card>
-        private var round: Int = 1
+        private var round: Int = 2
         private val players: MutableList<Player>
         private var playerOfMoment: Player
 
@@ -28,6 +28,14 @@ class CardGame {
             }
 
             return players
+        }
+
+        private fun returnOtherPlayer(): Player {
+            return if (playerOfMoment == players.first()) {
+                players.last()
+            } else {
+                players.first()
+            }
         }
 
         private fun positionMonsterOnBoard(): Boolean {
@@ -106,6 +114,35 @@ class CardGame {
         }
 
         private fun attackOpponent() {
+            playerOfMoment.showBoardMonsterCardsOnAttack()
+
+            println("--> Digite 'voltar' pra retornar ao menu <--")
+            print("=> Informe o índice de um desses MONSTROS no seu TABULEIRO: ")
+            val index = readlnOrNull() ?: ""
+
+            if (index == "voltar") {
+                return
+            }
+
+            val indexInt = index.toIntOrNull() ?: -1
+            val monsterCardAttack = playerOfMoment.findMonsterCardToAttack(indexInt)
+            if (monsterCardAttack == null) {
+                println("!!! Escolha inválida! Tente novamente.")
+                return attackOpponent()
+            }
+
+            val otherPlayer: Player = returnOtherPlayer()
+            if (otherPlayer.existMonsterCardsOnBoard()) {
+                println("--> Digite 'voltar' pra retornar ao menu <--")
+                print("=> Informe o índice de um dos MONSTROS no TABULEIRO do seu oponente: ")
+                val indexOponent = readlnOrNull() ?: ""
+
+                if (indexOponent == "voltar") {
+                    return
+                }
+            } else {
+                //
+            }
 
         }
 
@@ -188,7 +225,7 @@ class CardGame {
                     }
                     "d" -> {
                         if (round > 1 && playerOfMoment.existMonsterCardsOnBoard() && playerOfMoment.existsMonsterToAttack()) {
-//                            attackOpponent()
+                            attackOpponent()
                         } else {
                             println("Escolha inválida.")
                         }

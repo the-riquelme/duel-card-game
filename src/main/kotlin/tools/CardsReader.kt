@@ -10,11 +10,13 @@ class CardsReader () {
         private lateinit var cards: MutableList<Card>
 
         fun getCards(): MutableList<Card> {
+            // Verifica se a lista de cartas ainda não foi inicializada
             if (!::cards.isInitialized) {
                 val streamData:InputStream = File("cartas.csv").inputStream()
                 val data: List<String> = streamData.bufferedReader().lineSequence()
                     .filter { it.isNotBlank() }.toList()
 
+                // Mapeia os dados lidos do arquivo CSV em objetos de cartas
                 cards = data.map {
                     val cardData = it.split(";")
                     Card(

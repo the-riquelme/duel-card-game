@@ -55,6 +55,7 @@ class Card(
     val equipmentList: MutableList<Card>
         get() = equipment
 
+    // Função para adicionar uma carta de equipamento à carta
     fun addEquipment(equipment: Card) {
         this.attack += equipment.attackValue
         this.defense += equipment.defenseValue

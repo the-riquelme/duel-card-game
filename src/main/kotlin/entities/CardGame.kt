@@ -10,6 +10,8 @@ class CardGame {
         private val players: MutableList<Player>
         private var playerOfMoment: Player
 
+        // Inicialização estática - é executada quando a classe é carregada.
+
         init {
             println("#".repeat(25) + " -> Bem-vindo ao Duel Card Game <- " + "#".repeat(25) + "\n")
             cards = CardsReader.getCards()
@@ -17,6 +19,7 @@ class CardGame {
             playerOfMoment = players.first()
         }
 
+        // Inicialização do jogo, carregando as cartas e os jogadores.
         private fun playersEntry(): MutableList<Player> {
             val players = mutableListOf<Player>()
 
@@ -30,6 +33,7 @@ class CardGame {
             return players
         }
 
+        // Função para entrada de jogadores.
         private fun returnOtherPlayer(): Player {
             return if (playerOfMoment == players.first()) {
                 players.last()

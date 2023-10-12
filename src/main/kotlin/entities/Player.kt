@@ -284,10 +284,14 @@ class Player(
 
                 if (damageToReceive > 0) {
                     this.receivesDirectAttack(damageToReceive)
+                    print("\n=> OPONENTE (${otherPlayer.playerName}) recebeu ATAQUE direto de -${damageToReceive} PONTOS, pois o monstro atacante superou o monstro do oponente!\n")
+                } else {
+                    println("\n!!! Nenhum DANO PROFERIDO ou RECEBIDO, pois os pontos de ataque dos monstros envolvidos são iguais!")
+
                 }
             } else {
                 if (monster.defenseValue < damage) {
-                    println("\n!!! Monstro ${monster.nameValue} DESTRUÍDO.\n")
+                    println("\n!!! Monstro ${monster.nameValue} DESTRUÍDO.")
                     boardCards.removeAt(indexMonsterCard)
                 } else if (monster.defenseValue > damage) {
                     val damageToReceive = monster.defenseValue - damage
@@ -295,7 +299,7 @@ class Player(
 
                     print("\n=> OPONENTE (${otherPlayer.playerName}) recebeu ATAQUE direto de -${monster.attackValue} PONTOS, pois o monstro adversário superou em defesa seu monstro atacante!\n")
                 } else {
-                    println("\n!!! Nenhum DANO PROFERIDO ou RECEBIDO, pois os pontos de ataque e defesa dos monstros envolvidos são iguais!\n")
+                    println("\n!!! Nenhum DANO PROFERIDO ou RECEBIDO, pois os pontos de ataque e defesa dos monstros envolvidos são iguais!")
                 }
             }
         }

@@ -182,7 +182,7 @@ class CardGame {
             var equipAdded = false
 
             while (gameIsRunning) {
-                println("\n" + "#".repeat(25) + " -> Vez do Jogador: ${playerOfMoment.playerName} <- " + "#".repeat(25) + "\n")
+                println("\n" + "#".repeat(25) + " -> RODADA $round - Vez do Jogador: ${playerOfMoment.playerName} <- " + "#".repeat(25) + "\n")
                 playerOfMoment.showBoardCards()
                 playerOfMoment.showHandCards()
 
@@ -209,6 +209,8 @@ class CardGame {
                         println("   e) Alterar o estado de um monstro (ataque/defesa)")
                     }
                 }
+
+                println("   f) Terminar seu turno na rodada $round")
 
                 print("\n=> Escolha sua ação de acordo com sua letra correspondente: ")
                 val choice = readlnOrNull() ?: ""
@@ -249,13 +251,24 @@ class CardGame {
                             println("Escolha inválida.")
                         }
                     }
+                    "f" -> {
+                        if (playerOfMoment == players.last()) {
+                            round++
+                        }
+
+                        // proximo jogador
+                        playerOfMoment = returnOtherPlayer()
+                        monsterAdded = false
+                        equipAdded = false
+
+                        println("\n" + "-".repeat(30) + "> TURNO TERMINADO, vez do jogador ${playerOfMoment.playerName}")
+                    }
                     else -> {
                         println("Escolha inválida.")
                         gameIsRunning = false
                     }
                 }
             }
-
         }
 
         fun start() {

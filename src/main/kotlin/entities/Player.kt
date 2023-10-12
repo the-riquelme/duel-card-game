@@ -11,7 +11,8 @@ class Player(
     private var healthPoints: Int = 10000 // valor padrao
 
     fun showHandCards() {
-        println("-> Cartas na Mão - $name:\n")
+        println("-".repeat(30) + "> Cartas na Mão - $name:")
+        println("\n@@@ PONTO DE VIDA - ($name): ${this.healthPoints} \n")
         val cardLine = "+" + "-".repeat(100) + "+"
 
         for (i in 0..<handCards.size) {
@@ -40,7 +41,8 @@ class Player(
     }
 
     fun showBoardCards() {
-        println("-> Cartas no Tabuleiro - $name:\n")
+        println("-".repeat(30) + "> Cartas no Tabuleiro - $name:")
+        println("\n@@@ PONTO DE VIDA - ($name): ${this.healthPoints} \n")
         val cardLine = "+" + "-".repeat(100) + "+"
 
         for (i in 0..<boardCards.size) {
@@ -70,7 +72,8 @@ class Player(
     }
 
     fun showBoardMonsterCardsOnAttack() {
-        println("\n-> $name - Cartas no Tabuleiro em Posição de ATAQUE:\n")
+        println("\n" + "-".repeat(30) + "> $name - Cartas no Tabuleiro em Posição de ATAQUE:")
+        println("\n@@@ PONTO DE VIDA - ($name): ${this.healthPoints} \n")
         val cardLine = "+" + "-".repeat(100) + "+"
 
         for (i in 0..<boardCards.size) {
@@ -100,6 +103,43 @@ class Player(
 
         if (boardCards.isEmpty()) {
             println("| Nenhuma Carta no Tabuleiro em Posição de Ataque" + "\n")
+        } else {
+            println(cardLine + "\n")
+        }
+    }
+
+    fun showBoardMonsterCardsAsOponent() {
+        println("\n" + "-".repeat(30) + "> OPONENTE ($name) - Cartas no Tabuleiro:")
+        println("\n@@@ PONTO DE VIDA - OPONENTE ($name): ${this.healthPoints} \n")
+
+        val cardLine = "+" + "-".repeat(100) + "+"
+
+        for (i in 0..<boardCards.size) {
+            val boardCard = if (i < boardCards.size) boardCards[i] else null
+
+            println(cardLine)
+
+            if (
+                    boardCard != null &&
+                    boardCard.stateChangeAllowed &&
+                    boardCard.typeValue.lowercase() == "monstro"
+            ) {
+
+                println("| Index: $i   Nome: ${boardCard.nameValue.padEnd(20)}")
+                println("| Desc: ${boardCard.descriptionValue}")
+
+                if (boardCard.equipmentList.isNotEmpty()) {
+                    println("| Equip: ${boardCard.equipmentList.joinToString(", ") { it.nameValue }}")
+                }
+
+                println("| Modo: ${boardCard.modeValue.uppercase()}")
+                println("| Tipo: ${boardCard.typeValue.uppercase(Locale.getDefault())}   ATK: ${boardCard.attackValue}   DEF: ${boardCard.defenseValue}")
+
+            }
+        }
+
+        if (boardCards.isEmpty()) {
+            println("| Nenhuma Carta no Tabuleiro" + "\n")
         } else {
             println(cardLine + "\n")
         }

@@ -133,6 +133,8 @@ class CardGame {
 
             val otherPlayer: Player = returnOtherPlayer()
             if (otherPlayer.existMonsterCardsOnBoard()) {
+                otherPlayer.showBoardMonsterCardsAsOponent()
+
                 println("--> Digite 'voltar' pra retornar ao menu <--")
                 print("=> Informe o índice de um dos MONSTROS no TABULEIRO do seu oponente: ")
                 val indexOponent = readlnOrNull() ?: ""
@@ -152,6 +154,7 @@ class CardGame {
                 print("\n=> OPONENTE (${otherPlayer.playerName}) recebeu ATAQUE direto de -${monsterCardAttack.attackValue} PONTOS!\n")
             }
 
+            otherPlayer.showBoardMonsterCardsAsOponent()
             monsterCardAttack.stateChangeAllowed = false
         }
 

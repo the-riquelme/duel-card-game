@@ -140,10 +140,19 @@ class CardGame {
                 if (indexOponent == "voltar") {
                     return
                 }
+
+                val indexOponentInt = indexOponent.toIntOrNull() ?: -1
+                val monsterCardReceiveAttack = otherPlayer.receivesAttackOnMonsterCard(monsterCardAttack.attackValue, indexOponentInt, playerOfMoment)
+                if (monsterCardReceiveAttack == null) {
+                    println("!!! Escolha inválida! Tente novamente.")
+                    return attackOpponent()
+                }
             } else {
-                //
+                otherPlayer.receivesDirectAttack(monsterCardAttack.attackValue)
+                print("\n=> OPONENTE (${otherPlayer.playerName}) recebeu ATAQUE direto de -${monsterCardAttack.attackValue} PONTOS!\n")
             }
 
+            monsterCardAttack.stateChangeAllowed = false
         }
 
         private fun changeMonsterMode() {

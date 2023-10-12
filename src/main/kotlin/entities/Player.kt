@@ -217,6 +217,52 @@ class Player(
         return null
     }
 
+    fun receivesDirectAttack(damage: Int): Boolean {
+        healthPoints -= damage
+
+        return healthPoints <= 0
+    }
+
+    private fun findMonsterCardToReceiveAttack(indexMonsterCard: Int): Card? {
+        if (indexMonsterCard >= 0 && indexMonsterCard < boardCards.size) {
+            val monsterCard: Card = boardCards[indexMonsterCard]
+
+            if (monsterCard.typeValue.lowercase() == "monstro") {
+                return monsterCard
+            }
+        }
+
+        return null
+    }
+
+    fun receivesAttackOnMonsterCard(damage: Int, indexMonsterCard: Int, otherPlayer: Player): Card?  {
+        val monster = this.findMonsterCardToReceiveAttack(indexMonsterCard)
+
+        if (monster != null) {
+            if (monster.modeValue.lowercase() == "ataque") {
+                val damageToReceive = damage - monster.attackValue
+
+                if (damageToReceive > 0) {
+                    this.receivesDirectAttack(damageToReceive)
+                }
+            } else {
+                if (monster.defenseValue < damage) {
+                    println("\n!!! Monstro ${monster.nameValue} DESTRUÍDO.\n")
+                    boardCards.removeAt(indexMonsterCard)
+                } else if (monster.defenseValue > damage) {
+                    val damageToReceive = monster.defenseValue - damage
+                    otherPlayer.receivesDirectAttack(damageToReceive)
+
+                    print("\n=> OPONENTE (${otherPlayer.playerName}) recebeu ATAQUE direto de -${monster.attackValue} PONTOS, pois o monstro adversário superou em defesa seu monstro atacante!\n")
+                } else {
+                    println("\n!!! Nenhum DANO PROFERIDO ou RECEBIDO, pois os pontos de ataque e defesa dos monstros envolvidos são iguais!\n")
+                }
+            }
+        }
+
+        return monster
+    }
+
     val playerName: String
         get() = name
 

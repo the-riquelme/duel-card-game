@@ -183,6 +183,20 @@ class CardGame {
         }
 
         private fun checkGameEnd(): Boolean {
+            if (cards.size == 0) {
+                val player1 = players.first()
+                val player2 = players.last()
+                if (player1.points > player2.points) {
+                    println("\n" + "#".repeat(25) + " -> JOGO TEMINOU! ${player1.playerName} WIN!! <- " + "#".repeat(25) + "\n")
+                } else if (player1.points < player2.points) {
+                    println("\n" + "#".repeat(25) + " -> JOGO TEMINOU! ${player2.playerName} WIN!! <- " + "#".repeat(25) + "\n")
+                } else {
+                    println("\n" + "#".repeat(25) + " -> JOGO TEMINOU! EMPATE!! <- " + "#".repeat(25) + "\n")
+                }
+
+                return false
+            }
+
             for (player in players) {
                 if (player.points <= 0) {
                     val playerWin = if (player == players.first()) {

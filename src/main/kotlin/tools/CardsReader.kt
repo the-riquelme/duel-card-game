@@ -39,6 +39,15 @@ class CardsReader () {
             return selectedCards as MutableList<Card>
         }
 
+        fun pickRandomCard(deck: MutableList<Card>): Card {
+            require(deck.size >= 1) { "O deck deve ter pelo menos 1 cartas para selecionar." }
+
+            val selectedCard = deck.shuffled().take(1)
+            deck.removeAll(selectedCard)
+
+            return selectedCard[0]
+        }
+
     }
 
 }

@@ -307,6 +307,30 @@ class Player(
         return monster
     }
 
+    fun giveCardsToHand(card: Card) {
+        if (handCards.size < 10) {
+            handCards.add(card)
+        }
+    }
+
+    fun allowsMonstersToTrackStatus() {
+        for (i in 0..<boardCards.size) {
+            val boardCard =  boardCards[i]
+
+            if (boardCard.typeValue.lowercase() == "monstro") {
+                boardCard.stateChangeAllowed = true
+            }
+        }
+
+        for (i in 0..<handCards.size) {
+            val handCard =  handCards[i]
+
+            if (handCard.typeValue.lowercase() == "monstro") {
+                handCard.stateChangeAllowed = true
+            }
+        }
+    }
+
     val playerName: String
         get() = name
 

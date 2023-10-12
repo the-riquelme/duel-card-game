@@ -176,6 +176,36 @@ class CardGame {
             print("\n=> MODO da carta MONSTRO alterado com sucesso!\n")
         }
 
+        private fun giveCardsToPlayers() {
+            for (player in players) {
+                player.giveCardsToHand(CardsReader.pickRandomCard(cards))
+            }
+        }
+
+        private fun checkGameEnd(): Boolean {
+            for (player in players) {
+                if (player.points <= 0) {
+                    val playerWin = if (player == players.first()) {
+                        players.first()
+                    } else {
+                        players.last()
+                    }
+
+                    println("\n" + "#".repeat(25) + " -> JOGO TEMINOU! ${playerWin.playerName} WIN!! <- " + "#".repeat(25) + "\n")
+
+                    return false
+                }
+            }
+
+            return true
+        }
+
+        private fun allowsMonstersToTrackStatus() {
+            for (player in players) {
+                player.allowsMonstersToTrackStatus()
+            }
+        }
+
         private fun chooseAction() {
             var gameIsRunning = true
             var monsterAdded = false
@@ -254,20 +284,24 @@ class CardGame {
                     "f" -> {
                         if (playerOfMoment == players.last()) {
                             round++
+                            allowsMonstersToTrackStatus()
+                            giveCardsToPlayers()
+                            println("\n" + "-".repeat(30) + "> RODADA TERMINADA, JOGADORES RECEBEM UMA NOVA CARTA CASO TENHA MENOS DE 10 em mãos, vez do jogador ${playerOfMoment.playerName}")
+                        } else {
+                            println("\n" + "-".repeat(30) + "> TURNO TERMINADO, vez do jogador ${playerOfMoment.playerName}")
                         }
 
                         // proximo jogador
                         playerOfMoment = returnOtherPlayer()
                         monsterAdded = false
                         equipAdded = false
-
-                        println("\n" + "-".repeat(30) + "> TURNO TERMINADO, vez do jogador ${playerOfMoment.playerName}")
                     }
                     else -> {
                         println("Escolha inválida.")
-                        gameIsRunning = false
                     }
                 }
+
+                gameIsRunning = checkGameEnd()
             }
         }
 
